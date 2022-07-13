@@ -15,7 +15,7 @@ use {
 
 ## Setup
 
-In your `neo-tree` config:
+In your [neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) config:
 
 ```lua
   require("neo-tree").setup {
