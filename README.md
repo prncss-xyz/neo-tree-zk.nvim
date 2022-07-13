@@ -9,7 +9,10 @@ Via [packer.nvim](https://github.com/wbthomason/packer.nvim)
 ```lua
 use {
   "prncss-xyz/neo-tree-zk",
-  requires "nvim-neo-tree/neo-tree.nvim",
+  requires = {
+    "nvim-neo-tree/neo-tree.nvim",
+    "nvim-neo-tree/neo-tree.nvim"
+  },
 }
 ```
 
