@@ -1,6 +1,6 @@
 # Neo-tree-zk
 
-A [neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) source for [zk](https://github.com/mickael-menu/zk-nvim)
+A [neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) source for [zk-nvim](https://github.com/mickael-menu/zk-nvim).
 
 ## Installation
 
