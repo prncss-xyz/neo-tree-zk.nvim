@@ -47,6 +47,15 @@ local follow_internal = function()
 	end
 end
 
+M.default_config = {
+	follow_current_file = true,
+	window = {
+		mappings = {
+			["n"] = "change_query",
+		},
+	},
+}
+
 M.follow = function()
 	if vim.fn.bufname(0) == "COMMIT_EDITMSG" then
 		return false
