@@ -52,13 +52,15 @@ M.match_exact = {
 	desc = "Match (exact)",
 	input = function(_, cb)
 		vim.ui.input({ prompt = "Match (exact)" }, function(input)
-			cb({
-				desc = "Match (exact) " .. input,
-				query = {
-					match = input,
-					exactMatch = false,
-				},
-			})
+			if input then
+				cb({
+					desc = "Match (exact) " .. input,
+					query = {
+						match = input,
+						exactMatch = false,
+					},
+				})
+			end
 		end)
 	end,
 }
