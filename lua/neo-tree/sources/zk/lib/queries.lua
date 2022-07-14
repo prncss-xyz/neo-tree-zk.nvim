@@ -1,5 +1,7 @@
 local log = require("neo-tree.log")
 
+local input_postfix = ": "
+
 local M = {}
 
 M.all = {
@@ -35,7 +37,7 @@ M.flimsy = {
 M.match_inexact = {
 	desc = "Match (inexact)",
 	input = function(_, cb)
-		vim.ui.input({ prompt = "Match (inexact)" }, function(input)
+		vim.ui.input({ prompt = "Match (inexact)" .. input_postfix }, function(input)
 			if input then
 				cb({
 					desc = "Match (inexact) " .. input,
@@ -51,7 +53,7 @@ M.match_inexact = {
 M.match_exact = {
 	desc = "Match (exact)",
 	input = function(_, cb)
-		vim.ui.input({ prompt = "Match (exact)" }, function(input)
+		vim.ui.input({ prompt = "Match (exact)" .. input_postfix }, function(input)
 			if input then
 				cb({
 					desc = "Match (exact) " .. input,
@@ -146,7 +148,7 @@ local function date(field, refField, desc)
 					return
 				end
 				local default = notes[1] and notes[1].created
-				vim.ui.input({ prompt = desc, default = default }, function(input)
+				vim.ui.input({ prompt = desc .. input_postfix, default = default }, function(input)
 					if input then
 						cb({
 							desc = desc .. " " .. input,
