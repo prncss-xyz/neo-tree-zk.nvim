@@ -10,7 +10,8 @@ Via [packer.nvim](https://github.com/wbthomason/packer.nvim)
 use {
   "prncss-xyz/neo-tree-zk.nvim",
   requires = {
-    "nvim-neo-tree/neo-tree.nvim"
+    "nvim-neo-tree/neo-tree.nvim",
+    "mickael-menu/zk-nvim"
   },
 }
 ```
