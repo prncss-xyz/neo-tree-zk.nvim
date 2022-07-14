@@ -135,7 +135,6 @@ local function date(field, refField, desc)
 	return {
 		desc = desc,
 		input = function(id, cb)
-			dump(id)
 			local rPath = id:sub(vim.fn.getcwd():len() + 2)
 			require("zk.api").list(vim.fn.expand("%"), {
 				select = { refField },
