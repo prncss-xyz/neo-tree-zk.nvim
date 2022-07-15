@@ -10,7 +10,6 @@ local fs_actions = require("neo-tree.sources.filesystem.lib.fs_actions")
 local M = {}
 
 local refresh = utils.wrap(manager.refresh, "zk")
-local redraw = utils.wrap(manager.redraw, "zk")
 
 local function format_item(item)
 	return item.desc

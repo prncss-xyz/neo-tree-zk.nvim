@@ -132,7 +132,6 @@ M.linkToRecursive = link("linkTo", "Link to (recursive)", { recursive = true })
 M.linkedByRecursive = link("linkedByRecursive", "Linked by (recursive)", { recursive = true })
 M.related = link("related", "Related")
 
--- TODO: adjust date precision
 local function date(field, refField, desc)
 	return {
 		desc = desc,
@@ -147,7 +146,8 @@ local function date(field, refField, desc)
 					log("Error while querying tags: ", err)
 					return
 				end
-				local default = notes[1] and notes[1].created
+				local default = (notes[1] and notes[1][refField]) or ""
+				default = default:sub(1, 16)
 				vim.ui.input({ prompt = desc .. input_postfix, default = default }, function(input)
 					if input then
 						cb({
