@@ -73,7 +73,7 @@ M.navigate = function(state, path, path_to_reveal)
 		-- FIX:
 		renderer.position.set(state, path_to_reveal)
 	end
-	items.get_zk(state)
+	items.get_zk(state, path)
 end
 
 ---Configures the plugin, should be called before the plugin is used.

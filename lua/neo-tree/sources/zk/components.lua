@@ -12,7 +12,6 @@
 
 local highlights = require("neo-tree.ui.highlights")
 local common = require("neo-tree.sources.common.components")
-local utils = require("neo-tree.utils")
 
 local M = {}
 
@@ -22,7 +21,7 @@ M.name = function(config, node, state)
   if node.type == "directory" then
     if node:get_depth() == 1 then
       highlight = highlights.ROOT_NAME
-      name = state.zk and state.zk.desc
+      name = state.zk and state.zk.query.desc
     else
       highlight = highlights.DIRECTORY_NAME
     end

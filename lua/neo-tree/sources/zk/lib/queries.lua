@@ -6,7 +6,7 @@ local M = {}
 
 M.all = {
 	desc = "All",
-	input = function(_, cb)
+	input = function(_, _, cb)
 		cb({
 			desc = "All",
 			query = {},
@@ -16,14 +16,14 @@ M.all = {
 
 M.orphans = {
 	desc = "Orphans",
-	input = function(_, cb)
+	input = function(_, _, cb)
 		cb({ desc = "Orphans", query = { orphan = true } })
 	end,
 }
 
 M.flimsy = {
 	desc = "Filmsy",
-	input = function(_, cb)
+	input = function(_, _, cb)
 		cb({
 			desc = "Filmsy",
 			query = {
@@ -36,7 +36,7 @@ M.flimsy = {
 
 M.match_inexact = {
 	desc = "Match (inexact)",
-	input = function(_, cb)
+	input = function(_, _, cb)
 		vim.ui.input({ prompt = "Match (inexact)" .. input_postfix }, function(input)
 			if input then
 				cb({
@@ -52,7 +52,7 @@ M.match_inexact = {
 }
 M.match_exact = {
 	desc = "Match (exact)",
-	input = function(_, cb)
+	input = function(_, _, cb)
 		vim.ui.input({ prompt = "Match (exact)" .. input_postfix }, function(input)
 			if input then
 				cb({
@@ -73,8 +73,8 @@ end
 
 M.tag = {
 	desc = "Tag",
-	input = function(_, cb)
-		require("zk.api").tag.list(vim.fn.expand("%"), {}, function(err, tags)
+	input = function(notebookPath, _, cb)
+		require("zk.api").tag.list(notebookPath, {}, function(err, tags)
 			if err then
 				log("Error while querying tags: ", err)
 				return
@@ -101,8 +101,8 @@ end
 local function link(field, desc, extra)
 	return {
 		desc = desc,
-		input = function(_, cb)
-			require("zk.api").list(vim.fn.expand("%"), {
+		input = function(notebookPath, _, cb)
+			require("zk.api").list(notebookPath, {
 				select = { "title", "path", "filename" },
 			}, function(err, tags)
 				if err then
@@ -136,9 +136,9 @@ M.related = link("related", "Related")
 local function date(field, refField, desc)
 	return {
 		desc = desc,
-		input = function(id, cb)
+		input = function(notebookPath, id, cb)
 			local rPath = id:sub(vim.fn.getcwd():len() + 2)
-			require("zk.api").list(vim.fn.expand("%"), {
+			require("zk.api").list(notebookPath, {
 				select = { refField },
 				hrefs = { rPath },
 				limit = 1,
