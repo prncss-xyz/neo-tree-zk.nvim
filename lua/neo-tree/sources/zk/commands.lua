@@ -81,7 +81,7 @@ M.delete_note = function(state)
 			if err then
 				log.error("Error indexing notes " .. vim.inspect(err))
 			end
-			refresh()
+      refresh()
 		end)
 	end)
 end

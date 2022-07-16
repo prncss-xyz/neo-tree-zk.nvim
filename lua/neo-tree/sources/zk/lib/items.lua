@@ -47,15 +47,6 @@ function M.get_zk(state, path)
 		}
 	end
 
-	local id
-	local tree = state.tree
-	if tree then
-		_, id = pcall(function()
-			local _, node = tree:get_node()
-			return node:get_id()
-		end)
-	end
-
 	require("zk.api").list(
 		state.zk.notebookPath,
 		vim.tbl_extend("error", { select = { "absPath", "title" } }, state.zk.query.query),

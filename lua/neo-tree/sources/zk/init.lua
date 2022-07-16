@@ -51,6 +51,7 @@ M.default_config = {
 	follow_current_file = true,
 	window = {
 		mappings = {
+      ["d"] = "delete_note",
 			["n"] = "change_query",
 		},
 	},
