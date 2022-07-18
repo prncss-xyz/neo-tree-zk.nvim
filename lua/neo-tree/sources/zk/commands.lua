@@ -46,6 +46,9 @@ local function get_folder_node(tree, node)
 	return get_folder_node(tree, tree:get_node(node:get_parent_id()))
 end
 
+local fs = require("neo-tree.sources.filesystem")
+local utils = require("neo-tree.utils")
+
 -- TODO: directories on the fly
 M.add = function(state, toggle_directory)
 	local tree = state.tree
@@ -66,13 +69,13 @@ M.add = function(state, toggle_directory)
 					return
 				end
 				vim.cmd("e " .. res.path)
-				refresh()
+				fs._navigate_internal(state, nil, nil, nil, false)
 			end)
 		end
 	end)
 end
 
-M.delete_note = function(state)
+M.delete = function(state)
 	local tree = state.tree
 	local node = tree:get_node()
 	local id = node:get_id()
@@ -81,7 +84,7 @@ M.delete_note = function(state)
 			if err then
 				log.error("Error indexing notes " .. vim.inspect(err))
 			end
-      refresh()
+			fs._navigate_internal(state, nil, nil, nil, false)
 		end)
 	end)
 end
