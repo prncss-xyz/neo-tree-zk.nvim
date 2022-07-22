@@ -49,14 +49,6 @@ local function get_folder_node(tree, node)
 	return get_folder_node(tree, tree:get_node(node:get_parent_id()))
 end
 
-local function position_set(state, node_id)
-	if not type(node_id) == "string" and node_id > "" then
-		return
-	end
-	state.position.node_id = node_id
-	state.position.is.restorable = true
-end
-
 local function show_only_explicitly_opened(state, eod, path_to_reveal)
 	local expanded_nodes = renderer.get_expanded_nodes(state.tree)
 	local state_changed = false
