@@ -32,33 +32,18 @@ local function resolve_notebook_path_from_dir(path, cwd)
 	return path
 end
 
----Get a table of all open buffers, along with all parent paths of those buffers.
----The paths are the keys of the table, and all the values are 'true'.
-function M.get_zk(state, path)
-	if state.loading then
-		return
-	end
-	state.loading = true
-	if not state.zk then
-		local notebookPath = resolve_notebook_path_from_dir(path, vim.fn.getcwd())
-		state.zk = {
-			notebookPath = notebookPath,
-			query = default_query,
-		}
-	end
-
+function M.scan(state, callback)
 	require("zk.api").list(
-		state.zk.notebookPath,
+		state.path,
 		vim.tbl_extend("error", { select = { "absPath", "title" } }, state.zk.query.query),
 		function(err, notes)
 			if err then
 				log.error("Error querying notes " .. vim.inspect(err))
 				return
 			end
-			state.path = state.path or vim.fn.getcwd()
 			local context = file_items.create_context(state)
 			-- Create root folder
-			local root = file_items.create_item(context, state.zk.notebookPath, "directory")
+			local root = file_items.create_item(context, state.path, "directory")
 			root.name = vim.fn.fnamemodify(root.path, ":~")
 			root.loaded = true
 			root.search_pattern = state.search_pattern
@@ -83,8 +68,28 @@ function M.get_zk(state, path)
 			renderer.show_nodes({ root }, state)
 
 			state.loading = false
+			if type(callback) == "function" then
+				callback()
+			end
 		end
 	)
+end
+
+---Get a table of all open buffers, along with all parent paths of those buffers.
+---The paths are the keys of the table, and all the values are 'true'.
+function M.get_zk(state, path)
+	if state.loading then
+		return
+	end
+	state.loading = true
+	if not state.zk then
+		state.path = resolve_notebook_path_from_dir(path, vim.fn.getcwd())
+		state.zk = {
+			query = default_query,
+		}
+	end
+
+	M.scan(state)
 end
 
 return M
