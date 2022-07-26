@@ -28,6 +28,9 @@ M.change_query = function(state)
 		table.insert(items, item)
 	end
 	vim.ui.select(items, { prompt = "zk query", format_item = format_item }, function(item)
+		if not item then
+			return
+		end
 		item.input(state.zk.notebookPath, id, function(res)
 			state.zk.query = res
 			refresh()
