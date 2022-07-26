@@ -1,6 +1,7 @@
 --This file should contain all commands meant to be used by mappings.
-local renderer = require("neo-tree.ui.renderer")
 local vim = vim
+local loop = vim.loop
+local renderer = require("neo-tree.ui.renderer")
 local cc = require("neo-tree.sources.common.commands")
 local utils = require("neo-tree.utils")
 local manager = require("neo-tree.sources.manager")
@@ -73,7 +74,21 @@ local function show_only_explicitly_opened(state, eod, path_to_reveal)
 	end
 end
 
--- TODO: directories on the fly
+local function mkdir_p(path)
+	local create_all_as_folders
+	function create_all_as_folders(in_path)
+		if not loop.fs_stat(in_path) then
+			local parent, _ = utils.split_path(in_path)
+			if parent then
+				create_all_as_folders(parent)
+			end
+			loop.fs_mkdir(in_path, 493)
+		end
+	end
+
+	create_all_as_folders(path)
+end
+
 M.add = function(state)
 	local tree = state.tree
 	local node = get_folder_node(tree)
@@ -82,11 +97,21 @@ M.add = function(state)
 	if dir:len() > 0 then
 		dir = dir:sub(2)
 	end
-	local eod = state.explicitly_opened_directories or {} -- FIX: note working: always empty
+	local eod = state.explicitly_opened_directories or {} -- FIX: not working: always empty
 	vim.ui.input({ prompt = "new note title" }, function(input)
 		if input then
+			local dir_ = vim.fn.fnamemodify(input, ":h")
+			if dir_ ~= "." then
+				if dir == "" then
+					dir = dir_
+				else
+					dir = dir .. utils.path_separator .. dir_
+				end
+			end
+			local title = vim.fn.fnamemodify(input, ":t")
+			mkdir_p(state.path .. utils.path_separator .. dir)
 			require("zk.api").new(state.path, {
-				title = input,
+				title = title,
 				dir = dir,
 			}, function(err, res)
 				if err then
@@ -112,7 +137,7 @@ M.delete = function(state)
 			if err then
 				log.error("Error indexing notes " .. vim.inspect(err))
 			end
-			local eod = state.explicitly_opened_directories or {} -- FIX: note working: always empty
+			local eod = state.explicitly_opened_directories or {} -- FIX: not working: always empty
 			scan(state, function()
 				-- show_only_explicitly_opened(state, eod)
 			end)
