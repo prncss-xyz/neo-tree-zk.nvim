@@ -34,16 +34,32 @@ M.flimsy = {
 	end,
 }
 
-M.match_inexact = {
-	desc = "Match (inexact)",
+M.match_fts = {
+	desc = "Match (full-text)",
 	input = function(_, _, cb)
-		vim.ui.input({ prompt = "Match (inexact)" .. input_postfix }, function(input)
+		vim.ui.input({ prompt = "Match (full-text)" .. input_postfix }, function(input)
 			if input then
 				cb({
-					desc = "Match (inexact) " .. input,
+					desc = "Match (full-text) " .. input,
 					query = {
 						match = input,
-						exactMatch = true,
+						matchStrategy = 'fts',
+					},
+				})
+			end
+		end)
+	end,
+}
+M.match_re = {
+	desc = "Match (regular expression)",
+	input = function(_, _, cb)
+		vim.ui.input({ prompt = "Match (regular expression)" .. input_postfix }, function(input)
+			if input then
+				cb({
+					desc = "Match (regular expression) " .. input,
+					query = {
+						match = input,
+						matchStrategy = 're',
 					},
 				})
 			end
@@ -59,7 +75,7 @@ M.match_exact = {
 					desc = "Match (exact) " .. input,
 					query = {
 						match = input,
-						exactMatch = false,
+						matchStrategy = 'exact',
 					},
 				})
 			end

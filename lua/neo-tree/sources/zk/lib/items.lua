@@ -61,7 +61,7 @@ function M.scan(state, callback)
 			end
 
 			state.default_expanded_nodes = {}
-			for id_, _ in pairs(context.folders) do
+			for id_, _ in ipairs(context.folders) do
 				table.insert(state.default_expanded_nodes, id_)
 			end
 			file_items.deep_sort(root.children)
